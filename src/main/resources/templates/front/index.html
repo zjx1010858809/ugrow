@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" th:href="@{/static/front/Content/CSS/common.css}">
+    <link rel="stylesheet" th:href="@{/static/front/Content/CSS/index.css}">
+	<link rel="stylesheet" th:href="@{/static/webjars/layui/2.4.5/css/layui.css}" />
+
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <a href="#">学校首页</a>
+            <span>|</span>
+            <a href="#">设为首页</a>
+            <span>|</span>
+            <a href="#">加入收藏</a>
+            <span>|</span>
+            <a href="#">联系方式</a>
+        </div>
+    </div>
+    <div class="banner"></div>
+    <div class="nav">
+        <div class="hover-bg"></div>
+        <div class="container">
+            <ul>
+                <li class="menu-item"><a th:href="@{/front/index}">网站首页</a></li>
+                <li class="menu-item">
+                    <a th:href="@{/front/center?typeid=8}">中心概述</a>
+                    <div class="sub-nav">
+                        <a th:href="@{/front/center?typeid=8}">中心简介</a>
+                        <a th:href="@{/front/center?typeid=9}">机构设置</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a th:href="@{/front/news?typeid=10}">新闻公告</a>
+                    <div class="sub-nav">
+                        <a th:href="@{/front/news?typeid=10}">新闻动态</a>
+                        <a th:href="@{/front/news?typeid=11}">通知公告</a>
+                    </div>
+                </li>
+                <li class="menu-item"><a th:href="@{/front/news?typeid=3}">规章制度</a></li>
+
+                <li class="menu-item">
+                	<a th:href="@{/front/education?typeid=15}">成果展示</a>
+                	<div class="sub-nav">
+                        <a th:href="@{/front/education?typeid=15}">实验教学研究</a>
+                        <a th:href="@{/front/education?typeid=16}">创新创业</a>
+                        <a th:href="@{/front/education?typeid=17}">实验室文化</a>
+                    </div>                
+                </li>
+                <li class="menu-item"><a href="#">对外服务</a>
+                <div class="sub-nav">
+                	<a href="#">开放预约</a>
+                </div>
+                </li>
+                <li class="menu-item"><a href="#">资料下载</a>
+                <div class="sub-nav">
+                	<a th:href="@{/front/material?typeid=19}">文档下载</a>
+                	<a th:href="@{/front/material?typeid=20}">软件下载</a>
+                </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main">
+        <div class="container">
+            <div class="up">
+                <div class="slide-wrapper">
+				<div class="layui-carousel" id="test1" lay-filter="test1">
+  					<div carousel-item="">
+    				<div th:each="carousel:${carousel}"> <img th:src="@{/image/{filename}(filename=${carousel.pic})}" th:style="'width:350px;height:320px'"></div>
+
+  					</div>
+				</div>                
+                </div>
+                <div class="other-wrapper">
+                    <div class="news-wrapper">
+                        <h4 class="title"><span>新闻动态</span><a th:href="@{/front/news?typeid=10}" class="frt"> 更多> </a></h4>
+                        <hr>
+                        <ul>
+                            <li th:each="dynamic : ${dynamic}">
+                            <a th:href="@{/front/newsdetail(typeid=10,id=${dynamic.id})}">
+                            	<span class="news-title width300" th:text="${dynamic.title}"></span>
+                            	<span class="date" th:text="${dynamic.time}"></span>
+                            </a>
+                            </li>                         
+                        </ul>
+                    </div>
+                    <div class="news-wrapper mlt20">
+                        <h4 class="title"><span>规章制度</span><a th:href="@{/front/news?typeid=3}" class="frt"> 更多> </a></h4>
+                        <hr>
+                        <ul>
+                            <li th:each="rules : ${rules}">
+                            <a th:href="@{/front/newsdetail(typeid=3,id=${rules.id})}">
+                            	<span class="news-title width300" th:text="${rules.title}"></span>
+                            	<span class="date" th:text="${rules.time}"></span>
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="down">
+                <div class="news-wrapper">
+                    <h4 class="title"><span>通知公告</span><a th:href="@{/front/news?typeid=11}" class="frt"> 更多> </a></h4>
+                    <hr>
+                        <ul>
+                            <li th:each="notice : ${notice}">
+                            <a th:href="@{/front/newsdetail(typeid=11,id=${notice.id})}">
+                            	<span class="news-title width300" th:text="${notice.title}"></span>
+                            	<span class="date" th:text="${notice.time}"></span>
+                            </a>
+                            </li>                         
+                        </ul>
+                </div>
+                
+                <div class="news-wrapper mlt20">
+                    <h4 class="title"><span>成果展示</span><a th:href="@{/front/education?typeid=15}" class="frt"> 更多> </a></h4>
+                    <hr>
+                    <ul>
+                        <li th:each="result : ${result}">
+                        <a th:href="@{/front/educationdetail(typeid=15,id=${result.id})}">
+                        	<span class="news-title width450" th:text="${result.title}"></span>
+                        	<span class="date" th:text="${result.time}"></span>
+                        </a>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <span>网站备案信息</span>
+    </div>
+    
+<script th:src="@{/static/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/static/webjars/layui/2.4.5/layui.js}"></script>
+<script th:src="@{/static/front/Script/nav.js}"></script>
+</body>
+</html>
+<script>
+layui.use(['carousel', 'form'], function(){
+  var carousel = layui.carousel
+  ,form = layui.form;
+  
+  //常规轮播
+  carousel.render({
+    elem: '#test1'
+    ,arrow: 'always'
+    ,interval: 1800
+    ,anim: 'fade'
+    ,height: '320px'
+    ,width: '350px'
+  });
+});
+</script>
+

@@ -1,0 +1,126 @@
+body {
+
+}
+
+/*头部*/
+.nav {
+    height: 110px;
+}
+
+.hover-bg {
+    background-color: #f2f2f2;
+}
+
+.logo-wrapper {
+    vertical-align: middle;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-image: url("../Images/logo.png");
+    margin-right: 100px;
+}
+
+.nav-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/*主要内容*/
+.main {
+    margin-top: 50px;
+}
+
+.main .container {
+    display: flex;
+}
+
+.main .container .side-nav {
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+}
+
+.side-nav li a{
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+    color: #2487e3;
+    background-color: #edf6ff;
+    border-top: 1px solid #ffffff;
+}
+.side-nav li #select{
+	 display: inline-block;
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+    border-top: 1px solid #ffffff;
+    background-color:  #2487e3;
+    color: white;
+	
+}
+
+.side-nav li a:hover {
+    background-color:  #2487e3;
+    color: white;
+}
+.side-nav li a.active {
+    background-color:  #2487e3;
+    color: white;
+}
+
+.main .container .list-wrapper {
+    flex: 1;
+}
+
+.list-wrapper {
+    padding-bottom: 30px;
+}
+
+.list-wrapper a {
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+.list-wrapper a:hover span {
+    color: #2487e3;
+}
+
+.list-wrapper .icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #aaa;
+    border-radius: 50%;
+    margin: 0 15px;
+}
+.list-wrapper a .title {
+    display: inline-block;
+    width: 800px;
+    color: black;
+}
+
+.list-wrapper a .date {
+    float: right;
+    color: black;
+    padding: 0 20px;
+}
+
+.list-wrapper .page {
+    margin-top: 30px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+}
+
+
+

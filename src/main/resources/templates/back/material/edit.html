@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>文件上传</title>
+<link rel="stylesheet" th:href="@{/static/webjars/layui/2.4.5/css/layui.css}" />
+<script type="text/javascript" th:src="@{/static/webjars/jquery/3.3.1/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/static/webjars/layui/2.4.5/layui.js}" charset="utf-8"></script>
+<script>
+	layui.use('form', function() {
+		var form = layui.form;
+	});
+</script>
+</head>
+<body class="layui-anim layui-anim-up">
+<form class="layui-form">
+	<div class="layui-input-inline" style="position: absolute;">
+		<div class="layui-upload" style="margin-top: 10px;margin-left: 20px;">
+			<button type="button" class="layui-btn layui-btn-normal" id="chooseFile">选择多文件</button>
+			<button type="button" style="margin-left: 10px;" class="layui-btn" id="startupload">开始上传</button>
+			<div class="layui-upload-list">
+				<table class="layui-table">
+					<thead>
+					<tr>
+						<th width="200px;" style="text-align: center;">文件名</th>
+						<th width="100px;" style="text-align: center;">大小</th>
+						<th width="100px;" style="text-align: center;">状态</th>
+						<th width="80px;" style="text-align: center;">操作</th>
+					</tr>
+					</thead>
+				<tbody id="demoList"></tbody>
+				</table>
+			</div>
+			
+		</div>
+	</div>
+	
+	<input name="fileType" type="hidden" th:value="${fileType}" />
+  	
+  	<div style="position:absolute; margin-right: 25px;margin-top: 10px;margin-left: 540px;">
+		<button lay-submit lay-filter="formSave" class="layui-btn" type="button"><i class="layui-icon">&#xe67c;</i>保存</button>
+	</div>
+  	
+  	
+  	<input type="hidden" name="url" style="width: 100px;" class="layui-input path" value="">
+  	<input type="hidden" name="title" style="width: 300px;" class="layui-input title" value="">
+
+</form>
+
+
+
+
+
+<script th:inline="javascript">
+var fileType=[[${fileType}]];
+
+layui.use(['upload','layer'], function(){
+  var $ = layui.jquery
+  ,upload = layui.upload,
+  layer=layui.layer;
+  
+  var arr=[];
+  var title=[];
+  //多文件列表示例
+  var demoListView = $('#demoList')
+  ,uploadListIns = upload.render({
+    elem: '#chooseFile'
+    ,url: 'upload?fileType='+fileType
+    ,accept: 'file'
+    ,multiple: true
+    ,auto: false
+    ,bindAction: '#startupload'
+    ,choose: function(obj){
+      var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+      //读取本地文件
+      obj.preview(function(index, file, result){
+    	  
+    	  var aa=[];
+    	  aa=file.name.split(".");
+    	  title.push(aa[0]);
+        var tr = $(['<tr id="upload-'+ index +'">'
+          ,'<td style="text-align: center;">'+ file.name +'</td>'
+          ,'<td style="text-align: center;">'+ (file.size/1014).toFixed(1) +'kb</td>'
+          ,'<td style="text-align: center;">等待上传</td>'
+          ,'<td style="text-align: center;">'
+            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+          ,'</td>'
+        ,'</tr>'].join(''));
+        
+        //单个重传
+        tr.find('.demo-reload').on('click', function(){
+          obj.upload(index, file);
+        });
+        
+        //删除
+        tr.find('.demo-delete').on('click', function(){
+          delete files[index]; //删除对应的文件
+          tr.remove();
+          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+        });
+        
+        demoListView.append(tr);
+      });
+    }
+  	,before:function(){
+  		
+/*   		var ss=[];
+  		ss=this.url.split("?");
+
+  		this.url=ss[0]+"?fileType="+$('.checktype input[name="fileType"]:checked').val(); */
+  		layer.load();//上传loading
+  	}
+    ,done: function(res, index, upload){
+    	if(res.code == 0){ //上传成功
+    		
+    	arr.push(res.data);
+    	$(".path").val(arr);
+    	$(".title").val(title);
+        var tr = demoListView.find('tr#upload-'+ index)
+        ,tds = tr.children();
+        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+        tds.eq(3).html(''); //清空操作
+        layer.closeAll('loading');//关闭loading
+        return delete this.files[index]; //删除文件队列已经上传成功的文件
+      }else{
+    	  layer.msg(res.msg,{time:500});
+      }
+      this.error(index, upload);
+    }
+    ,error: function(index, upload){
+      var tr = demoListView.find('tr#upload-'+ index)
+      ,tds = tr.children();
+      tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+      tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+      layer.closeAll('loading');
+    }
+  });
+  
+});
+</script>
+
+<script type="text/javascript">
+	layui.use(['layer','form'], function(){
+		var layer=layui.layer,
+		form=layui.form;
+
+//		新增
+		 form.on('submit(formSave)', function(data){
+			 $.post("/material/insert",data.field,function (json){
+					if(json.status>0){
+						var index=parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+						parent.location.reload();
+					} else {
+						layer.msg(json.text,{time:500});
+					}
+				});
+			    return false;
+			  });
+	});
+
+	</script>
+</body>
+
+</html>

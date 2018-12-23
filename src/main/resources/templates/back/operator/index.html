@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Operator</title>
+    <link rel="stylesheet" th:href="@{/static/webjars/layui/2.4.5/css/layui.css}" />
+    <link rel="stylesheet" th:href="@{/static/back/css/xadmin.css}">
+    <script type="text/javascript" th:src="@{/static/webjars/jquery/3.3.1/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/static/webjars/layui/2.4.5/layui.js}"></script>
+	<script type="text/javascript" th:src="@{/static/back/js/xadmin.js}"></script>
+
+    <script>
+        layui.use('form', function() {
+            var form = layui.form
+        });
+    </script>
+</head>
+<body>
+	<div class="x-body">
+	<xblock>
+		<div class="layui-inline">
+			<div class="demoTable">
+				<div class="layui-input-inline">
+					<input type="text" name="name" placeholder="请输入姓名..." class="layui-input" id="operator_Search">
+				</div>
+				<button class="layui-btn" data-type="reload" id="operatorSearch" style="margin-left:-4px"><i class="layui-icon">&#xe615;</i></button>
+			</div>
+		</div>
+    	<button class="layui-btn" th:onclick="openwin('添加','/operator/add','700','420')"><i class="layui-icon"></i>添加</button>
+  		<a class="layui-btn layui-btn-small" style="line-height:1.5em;margin-top:1px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+    	<i class="layui-icon" style="line-height:30px;">ဂ</i>
+    	</a>
+	</xblock>
+	</div>
+	<div style="margin-left: 20px;margin-top: -20px;">	
+		<table style="left: 10px;" id="operatortable" class="layui-hide" lay-filter="operatorDemo"></table>
+	</div>
+	<script type="text/html" id="barOperator">
+		<a style="margin-left: 5px;margin-right: 5px;" title="修改"><i class="layui-icon" aria-hidden="true" lay-event="edit">&#xe642;</i></a>
+		<a style="margin-left: 5px;margin-right: 5px;" title="重置密码"><i class="layui-icon" aria-hidden="true" lay-event="resetPass">&#xe669;</i></a>
+		<a style="margin-left: 5px;margin-right: 5px;" title="删除"><i class="layui-icon" aria-hidden="true" lay-event="delete">&#xe640;</i></a>
+	</script>
+	<script>
+		layui.use('table', function() {
+			var table = layui.table,
+			$=layui.$;
+			
+			var w=$(window).width();
+			
+			table.render({
+				elem : '#operatortable',
+				width:w-60,
+				url : '../operator/index_json' //数据接口
+				,id : 'operatorTestReload'
+				,page : true //开启分页
+				,cols : [ [ //表头
+				/* {field : 'id',title : 'ID',width : 80,sort : true,align : 'center'}, */ 
+				{field : 'nike',title : '用户名',width : '20%',align : 'center'},
+				{field : 'name',title : '姓名',width : '15%',align : 'center'},
+				{field : 'sexlist',title : '性别',width : '15%',align : 'center'},
+				{field : 'tel',title : '电话',width : '15%',align : 'center'},
+				{field : 'comments',title : '备注',width : '20%',align : 'center'}, 
+				{fixed : 'right',title : '操作',width : '',align : 'center',toolbar : '#barOperator'
+				} ] ]
+			});
+			
+			//查询
+			var $ = layui.$, active = {
+			        reload: function(){
+			            var demoReload = $('#demoReload');
+			            table.reload('operatorTestReload', {
+			                where: {
+			                	name : $("#operator_Search").val(),
+			                }
+			            });
+			        }
+			    };
+			$('#operatorSearch').on('click', function(){
+			    var type = $(this).data('type');
+			    active[type] ? active[type].call(this) : '';
+			});
+			
+			
+			//监听工具条
+			  table.on('tool(operatorDemo)', function(obj){
+			    var data = obj.data;
+			    var id = data.id;
+			    if(obj.event === 'edit'){
+			    	layer.open({
+						type : 2,
+						title : '修改',
+						area : ['700px','420px' ],
+						fixed : false, //不固定
+						maxmin : false,
+						content : '/operator/edit?id='+id,
+						end:function(){
+							table.reload('operatorTestReload');
+						}
+					});
+			    } else if(obj.event === 'resetPass'){
+			        layer.confirm('确认重置密码？',{title:'重置'}, function(index){
+			        	$.post("/operator/reset",{id:id},function (json){
+			        		if(json.status>0){
+			        			layer.msg(json.text,{time:500});
+			        		}
+			        	});
+			            layer.close(index);
+			          });
+			     }else if(obj.event==='delete'){
+			    	 layer.confirm('确认删除？',{title:'删除'}, function(index){
+				        	$.post("/operator/delete",{id:id},function (json){
+				        		if(json.status>0){
+				        			layer.msg(json.text,{time:500});
+				        			table.reload('operatorTestReload');
+				        		}
+				        	});
+				            layer.close(index);
+				          });
+			     }
+			  });
+			
+		});
+		
+		layui.use(['layer','table'], function() {
+			var layer = layui.layer,
+			table=layui.table;
+		});
+		
+		//新增
+		function openwin(title, content, width, height) {
+			layer.open({
+				type : 2,
+				title : title,
+				area : [ width + 'px', height + 'px' ],
+				fixed : false, //不固定
+				maxmin : false,
+				content : content
+			});
+		}
+		
+	</script>
+</body>
+</html>

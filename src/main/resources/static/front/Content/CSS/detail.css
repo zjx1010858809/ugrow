@@ -1,0 +1,17 @@
+.main {
+    padding-top: 10px;
+}
+
+.nav-link a,span{
+    font-size: 14px;
+    color: black;
+}
+
+.nav-link a:hover {
+    color: #1E9FFF;
+}
+
+.detail-title {
+    padding: 20px 0;
+    text-align: center;
+}

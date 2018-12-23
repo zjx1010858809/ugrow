@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" th:href="@{/static/webjars/layui/2.4.5/css/layui.css}" />
+<script type="text/javascript" th:src="@{/static/webjars/jquery/3.3.1/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/static/webjars/layui/2.4.5/layui.js}"></script>
+<script>
+	layui.use('form', function() {
+		var form = layui.form;
+	});
+</script>
+</head>
+<body>
+
+	<form class="layui-form" action="">
+		<div class="layui-form-item" style="margin-top: 25px">
+			<div class="layui-inline">
+				<label class="layui-form-label">用户名*：</label>
+				<div class="layui-input-inline">
+					<input th:if="${operatorInfo}==null" type="text" name="nike" lay-verify="required" class="layui-input operatorNike" value="">
+					<input th:if="${operatorInfo}!=null" type="text" name="nike" lay-verify="required" class="layui-input operatorNike" th:value="${operatorInfo.nike}" readonly="readonly">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">手机*：</label>
+				<div  class="layui-input-inline">
+					<input th:if="${operatorInfo}==null" type="tel" name="tel" lay-verify="required|phone|number" class="layui-input operatorTel" value="">
+					<input th:if="${operatorInfo}!=null" type="tel" name="tel" lay-verify="required|phone|number" class="layui-input operatorTel" th:value="${operatorInfo.tel}">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">姓名*：</label>
+				<div class="layui-input-inline">
+					<input th:if="${operatorInfo}==null" type="text" name="name" lay-verify="required" class="layui-input operatorName" value="">
+					<input th:if="${operatorInfo}!=null" type="text" name="name" lay-verify="required" class="layui-input operatorName" th:value="${operatorInfo.name}">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">性别：</label>
+				<div th:if="${operatorInfo==null}" class="layui-input-inline">
+					<input type="radio" name="sex" value="0" title="男" checked="checked">
+					<input type="radio" name="sex" value="1" title="女">
+				</div>
+				<div th:if="${operatorInfo!=null}" class="layui-input-inline">
+					<input th:if="${operatorInfo.sex}==1" type="radio" name="sex" value="0" title="男">
+					<input th:if="${operatorInfo.sex}==1" type="radio" name="sex" value="1" title="女" checked="checked">
+					<input th:if="${operatorInfo.sex}==0" type="radio" name="sex" value="0" title="男" checked="checked">
+					<input th:if="${operatorInfo.sex}==0" type="radio" name="sex" value="1" title="女">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">备注：</label>
+			<div class="layui-input-block" style="margin-right:50px">
+				<textarea th:if="${operatorInfo}==null" placeholder="请输入内容" class="layui-textarea" name="comments"></textarea>
+				<textarea th:if="${operatorInfo}!=null" th:text="${operatorInfo.comments}" placeholder="请输入内容" class="layui-textarea" name="comments"></textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block" style="text-align: center;">
+				<input th:if="${operatorInfo}==null" class="layui-btn" href="javascript:;" lay-submit lay-filter="formInsert" type="button" value="提交">
+				<input th:if="${operatorInfo}!=null" class="layui-btn" href="javascript:;" lay-submit lay-filter="formUpdate" type="button" value="提交">
+				<input th:if="${operatorInfo}!=null" type="hidden" name="id" class="layui-input operatorId" th:value="${operatorInfo.id}" readonly>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+	<script type="text/javascript">
+	layui.use(['layer','form'], function(){
+		var layer=layui.layer,
+		form=layui.form;
+
+//		新增
+		 form.on('submit(formInsert)', function(data){
+			 $.post("/operator/insert",data.field,function (json){
+					if(json.status>0){
+						var index=parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+						parent.location.reload();
+					} else {
+						layer.msg(json.text,{time:500});
+					}
+				});
+			    return false;
+			  });
+//		修改
+		 form.on('submit(formUpdate)', function(data){
+			$.post("/operator/update",data.field,function (json){
+				if(json.status>0){
+					var index=parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				} else {
+					layer.msg(json.text,{time:500});
+				} 
+			});
+		 });
+	});
+
+	</script>
+	
+</body>
+</html>

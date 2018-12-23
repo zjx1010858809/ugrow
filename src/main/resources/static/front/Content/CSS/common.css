@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.flt {
+    float: left;
+}
+
+.frt {
+    float: right;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1200px;
+}

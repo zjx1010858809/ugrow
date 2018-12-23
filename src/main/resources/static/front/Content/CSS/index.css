@@ -1,0 +1,214 @@
+body {
+    background-color: #f2f2f2;
+}
+.header {
+    background-color: #1E9FFF;
+    text-align: right;
+    height: 30px;
+    line-height: 30px;
+}
+.header a,span {
+    color: white;
+}
+
+/*banner*/
+
+.banner {
+    height: 107px;
+    /*background-image: url("../Images/banner.png");*/
+    background-color: #01AAED;
+
+}
+
+/*导航*/
+
+.nav {
+    position: relative;
+    height: 70px;
+    padding-top: 10px;
+}
+
+.hover-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: white;
+    display: none;
+}
+
+.nav ul li {
+    float: left;
+    padding: 5px 20px;
+    position: relative;
+}
+
+.nav ul li a {
+    color: black;
+    font-size: 15px;
+}
+.nav ul li a:hover {
+    color: #1E9FFF;
+}
+
+.nav ul li div {
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    width: 300px;
+}
+
+.nav ul li div a {
+    padding-right:10px;
+}
+
+.sub-nav {
+    display: none;
+}
+
+/*主要内容*/
+
+.main {
+    margin-top: 15px;
+}
+
+/*上面部分*/
+.up {
+    width: 100%;
+    display: flex;
+}
+
+.up .slide-wrapper {
+    width: 350px;
+    height: 320px;
+    margin-right: 20px;
+    background-color: white;
+}
+
+.up .other-wrapper {
+    flex: 1;
+    display: flex;
+}
+
+.news-wrapper {
+    flex: 1;
+    height: 320px;
+    background-color: white;
+    box-sizing: border-box;
+    padding:0 10px;
+
+}
+
+.news-wrapper ul li {
+    padding: 5px 0;
+}
+
+.news-wrapper span {
+    font-size: 14px;
+    color: black;
+}
+
+.news-wrapper span.date {
+    float: right;
+}
+
+.news-wrapper .news-title {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.news-title.width300 {
+    width: 300px;
+}
+
+.news-title.width450 {
+    width: 450px;
+}
+
+
+.news-wrapper ul li a {
+    display: inline-block;
+    width: 100%;
+}
+
+.news-wrapper ul li:hover span{
+    color: #01AAED;
+}
+
+.title {
+    margin-top: 20px;
+    padding-bottom: 10px;
+
+}
+.title span {
+    color: #01AAED;
+}
+
+hr {
+    border: 1px solid #01AAED;
+}
+
+/*下面部分*/
+
+.down {
+    margin-top: 20px;
+    display: flex;
+}
+
+.mlt20 {
+    margin-left: 20px;
+}
+
+/*底部*/
+
+.bottom {
+    margin-top: 30px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 14px;
+    background-color: white;
+}
+
+
+
+.bottom span {
+    color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
